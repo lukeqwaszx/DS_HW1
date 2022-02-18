@@ -1,47 +1,105 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.regex.*;
   
   
 public class BigInteger
 {
     public static final String QUIT_COMMAND = "quit";
     public static final String MSG_INVALID_INPUT = "입력이 잘못되었습니다.";
-  
-    // implement this
-    public static final Pattern EXPRESSION_PATTERN = Pattern.compile("");
-  
-  
-    public BigInteger(int i)
-    {
+    public static final Pattern EXPRESSION_PATTERN = Pattern.compile("[+\\-*]");
+
+    // Fields
+    private boolean isNegative = false;
+    private byte[] digits = new byte[200];
+
+    // Constructors
+    public BigInteger() {
     }
-  
-    public BigInteger(int[] num1)
-    {
+
+    //Constructor to be deprecated
+    public BigInteger(int i) {
+        if (i < 0) {
+            isNegative = true;
+            i *= -1;
+        } for (int j = 0; i != 0; j++) {
+        digits[j] = (byte) (i % 10);
+        i /= 10;
+        }
     }
-  
-    public BigInteger(String s)
-    {
+
+    // Assumes proper inputs
+    public BigInteger(String s) {
+        if (s.startsWith("-")) {
+            isNegative = true;
+            s = s.substring(1);
+        }
+        for (int j = 0; !(s.equals("") || s.equals("-")); j++, s = s.substring(0, s.length() - 1)) {
+            digits[j] = (byte) Character.getNumericValue(s.charAt(s.length() - 1));
+        }
+
     }
-  
-    public BigInteger add(BigInteger big)
-    {
+
+    // Main operations
+    public BigInteger add(BigInteger big) {
+        if ()
     }
-  
-    public BigInteger subtract(BigInteger big)
-    {
+
+    public BigInteger subtract(BigInteger big) {
+
     }
-  
-    public BigInteger multiply(BigInteger big)
-    {
+
+    public BigInteger multiply(BigInteger big) {
+
     }
-  
+
     @Override
-    public String toString()
-    {
+    public String toString() {
+
+    }
+    // Helper methods
+    private BigInteger primitiveAdd(BigInteger big) {
+        BigInteger newBig = new BigInteger();
+        for (int i = 0, carry = 0; i <= 100; i++) {
+            int calc = digits[i] + big.digits[i] + carry;
+            carry = calc / 10;
+            newBig.digits[i] = (byte) calc % 10;
+        }
+    }
+
+
+    private BigInteger primitiveSubtract(BigInteger big) {
+
+    }
+
+    private boolean isAbsoluteBigger(BigInteger big) {
+        int myLength = endIndex();
+        int otherLength = big.endIndex();
+        if (myLength > otherLength) {
+            return true;
+        } else if (myLength < otherLength) {
+            return true;
+        } else {
+            for (int i = myLength; i >= 0; i--) {
+                if (digits[i] > big.digits[i]) {
+                    return true;
+                } else if (digits[i] < big.digits[i]) {
+                    return false;
+                }
+            } return false;
+        }
+    }
+
+    private int endIndex(void) {
+        for (int i = 199; i >= 0; i--) {
+            if (digits[i] != 0) {
+                return i;
+            }
+        }
+        return -1;
     }
   
+
     static BigInteger evaluate(String input) throws IllegalArgumentException
     {
         // implement here
