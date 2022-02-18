@@ -40,13 +40,29 @@ public class BigInteger
 
     }
 
+    // Produce negative
+    public BigInteger(BigInteger a) {
+        digits = a.digits;
+    }
+
     // Main operations
     public BigInteger add(BigInteger big) {
-        if ()
+        if (isNegative == big.isNegative) {
+            BigInteger value = primitiveAdd(big);
+            value.isNegative = isNegative;
+        } else {
+            if (isAbsoluteBigger(big)) {
+                BigInteger value = primitiveSubtract(big);
+                value.isNegative = isNegative;
+            } else {
+                BigInteger value = big.primitiveSubtract(this);
+                value.isNegative = big.isNegative;
+            }
+        }
     }
 
     public BigInteger subtract(BigInteger big) {
-
+        BigInteger negation = big.clone();
     }
 
     public BigInteger multiply(BigInteger big) {
@@ -63,13 +79,22 @@ public class BigInteger
         for (int i = 0, carry = 0; i <= 100; i++) {
             int calc = digits[i] + big.digits[i] + carry;
             carry = calc / 10;
-            newBig.digits[i] = (byte) calc % 10;
-        }
+            newBig.digits[i] = (byte) (calc % 10);
+        } return newBig;
     }
 
 
     private BigInteger primitiveSubtract(BigInteger big) {
-
+        BigInteger newBig = new BigInteger();
+        for (int i = 0, carry = 0; i <= 100; i++) {
+            if (digits[i] + carry < big.digits[i]) {
+                newBig.digits[i] = (byte) (digits[i] + carry + 10 - big.digits[i]);
+                carry = -1;
+            } else {
+                newBig.digits[i] = (byte) (digits[i] + carry - big.digits[i]);
+                carry = 0
+            }
+        } return newBig;
     }
 
     private boolean isAbsoluteBigger(BigInteger big) {
@@ -90,7 +115,7 @@ public class BigInteger
         }
     }
 
-    private int endIndex(void) {
+    private int endIndex() {
         for (int i = 199; i >= 0; i--) {
             if (digits[i] != 0) {
                 return i;
@@ -141,12 +166,10 @@ public class BigInteger
     {
         boolean quit = isQuitCmd(input);
   
-        if (quit)
-        {
+        if (quit) {
             return true;
         }
-        else
-        {
+        else {
             BigInteger result = evaluate(input);
             System.out.println(result.toString());
   
